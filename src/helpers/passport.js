@@ -3,7 +3,7 @@ import passportLocal from 'passport-local';
 import passportJwt from 'passport-jwt';
 import bcrypt from 'bcryptjs';
 
-import database from './database';
+import User from '../models/userModel';
 
 // JSON web token strategy
 const JwtStrategy = passportJwt.Strategy;
@@ -22,16 +22,15 @@ passport.use(
 		async (payload, done) => {
 			try {
 				// Finde the user
-				const user = await database.query('SELECT * FROM users WHERE user_id = ?', [
-					payload.sub
-				]);
 
-				if (user.length <= 0) {
+				const user = await User.findById(payload.sub);
+
+				if (!user) {
 					return done(null, false);
 				}
 
 				// Authorized
-				return done(null, user[0]);
+				return done(null, user);
 			} catch (error) {
 				return done(error, false);
 			}
@@ -43,20 +42,20 @@ passport.use(
 passport.use(
 	new LocalStrategy(
 		{
-			usernameField: 'email',
+			usernameField: 'login',
 			passwordField: 'password'
 		},
-		async (email, password, done) => {
+		async (login, password, done) => {
 			try {
 				// Finde the user
-				const user = await database.query('SELECT * FROM users WHERE email = ?', [email]);
+				const user = await User.findOne({ where: { login } });
 
-				if (user.length <= 0) {
+				if (!user) {
 					return done(null, false);
 				}
 
 				// Check that password is correct
-				const hash = user[0].password;
+				const hash = user.password;
 				const valide = await bcrypt.compare(password, hash);
 
 				if (!valide) {
@@ -64,7 +63,7 @@ passport.use(
 				}
 
 				// Authorized
-				return done(null, user[0]);
+				return done(null, user);
 			} catch (error) {
 				return done(error, false);
 			}

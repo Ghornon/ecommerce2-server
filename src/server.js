@@ -14,27 +14,29 @@ dotenv.config();
 
 const app = express();
 
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 database
 	.authenticate()
 	.then(() => {
-		console.log('Connection has been established successfully.');
-		User.sync().then(() => {
-			// Now the `users` table in the database corresponds to the model definition
-			return User.findOrCreate({
-				where: { login: 'John' },
-				defaults: {
-					login: 'John',
-					password: '1234',
-					email: 'email@email.com',
-					firstName: 'John',
-					lastName: 'Doe',
-					permissionId: 1
-				}
-			});
+		console.info('Connection has been established successfully.');
+
+		User.findOrCreate({
+			where: { login: 'John' },
+			defaults: {
+				login: 'John',
+				password: '1234',
+				email: 'email@email.com',
+				firstName: 'John',
+				lastName: 'Doe',
+				permissionId: 1
+			}
 		});
+
+		User.findOne({ where: { login: 'John' } }).then(data =>
+			console.log('User John: ', data.get())
+		);
 	})
 	.catch(err => {
 		console.error('Unable to connect to the database:', err);
@@ -42,10 +44,10 @@ database
 
 // Routes
 
-app.route('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 // Server
 const port = process.env.PORT || 8080;
 
 /* eslint no-console: 0 */
-app.listen(port, () => console.log(`[Server] Test app listening on port ${port}!`));
+app.listen(port, () => console.info(`[Server] Test app listening on port ${port}!`));
