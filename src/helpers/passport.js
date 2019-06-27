@@ -23,7 +23,7 @@ passport.use(
 			try {
 				// Finde the user
 
-				const user = await User.findById(payload.sub);
+				const user = await User.findByPk(payload.sub);
 
 				if (!user) {
 					return done(null, false);

@@ -1,16 +1,15 @@
+import 'dotenv/config'; // Import config from .env
 import express from 'express';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
 import database from './helpers/database';
+import Logger from './helpers/logger';
 import authRouter from './routes/authRouter';
 
 import User from './models/userModel';
 
 // Config
-
-dotenv.config();
 
 const app = express();
 
@@ -20,7 +19,7 @@ app.use(bodyParser.json());
 database
 	.authenticate()
 	.then(() => {
-		console.info('Connection has been established successfully.');
+		Logger.ok('Connection has been established successfully.');
 
 		User.findOrCreate({
 			where: { login: 'John' },
@@ -39,7 +38,7 @@ database
 		);
 	})
 	.catch(err => {
-		console.error('Unable to connect to the database:', err);
+		Logger.error('Unable to connect to the database:', err);
 	});
 
 // Routes
@@ -50,4 +49,4 @@ app.use('/api/auth', authRouter);
 const port = process.env.PORT || 8080;
 
 /* eslint no-console: 0 */
-app.listen(port, () => console.info(`[Server] Test app listening on port ${port}!`));
+app.listen(port, () => Logger.info(`Test app listening on port ${port}!`));
