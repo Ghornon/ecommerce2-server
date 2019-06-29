@@ -1,4 +1,5 @@
 import User from '../models/userModel';
+
 import { signToken, genHash } from '../helpers/authHelper';
 
 const signIn = async (req, res) => {
@@ -14,16 +15,16 @@ const signUp = async (req, res) => {
 
 	const hash = await genHash(password);
 
-	const user = await User.findOrCreate({
+	const [user, isNewRecord] = await User.findOrCreate({
 		where: { login },
 		defaults: { login, password: hash, email, firstName, lastName, permissionId: 6 }
 	});
 
-	if (user[1]) {
+	if (!isNewRecord) {
 		return res.status(409).json({ error: 'Login is already in use!' });
 	}
 
-	const token = signToken(user[1].id);
+	const token = signToken(user.id);
 
 	// Send token
 	return res.status(201).json({ token });

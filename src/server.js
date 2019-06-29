@@ -3,11 +3,16 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
+// Helpers
+
 import database from './helpers/database';
 import Logger from './helpers/logger';
-import authRouter from './routes/authRouter';
 
-import User from './models/userModel';
+// Routers
+
+import authRouter from './routes/authRouter';
+import invetoryRouter from './routes/invetoryRouter';
+import cartRouter from './routes/cartRouter';
 
 // Config
 
@@ -20,22 +25,6 @@ database
 	.authenticate()
 	.then(() => {
 		Logger.ok('Connection has been established successfully.');
-
-		User.findOrCreate({
-			where: { login: 'John' },
-			defaults: {
-				login: 'John',
-				password: '1234',
-				email: 'email@email.com',
-				firstName: 'John',
-				lastName: 'Doe',
-				permissionId: 1
-			}
-		});
-
-		User.findOne({ where: { login: 'John' } }).then(data =>
-			console.log('User John: ', data.get())
-		);
 	})
 	.catch(err => {
 		Logger.error('Unable to connect to the database:', err);
@@ -44,6 +33,8 @@ database
 // Routes
 
 app.use('/api/auth', authRouter);
+app.use('/api/inventory', invetoryRouter);
+app.use('/api/cart', cartRouter);
 
 // Server
 const port = process.env.PORT || 8080;

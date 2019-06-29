@@ -1,30 +1,41 @@
 import Sequelize, { Model } from 'sequelize';
 import database from '../helpers/database';
 
-class Permission extends Model {}
+class Inventory extends Model {}
 
-Permission.init(
+Inventory.init(
 	{
 		id: {
 			type: Sequelize.INTEGER,
 			primaryKey: true,
-			field: 'permission_id',
+			field: 'inventory_id',
 			autoIncrement: true
 		},
-		label: {
+		name: {
 			type: Sequelize.STRING,
 			allowNull: false
 		},
-		power: {
+		description: {
+			type: Sequelize.STRING,
+			allowNull: false
+		},
+		image: {
+			type: Sequelize.STRING
+		},
+		price: {
 			type: Sequelize.INTEGER,
 			allowNull: false
+		},
+		sale: {
+			type: Sequelize.INTEGER
 		}
 	},
 	{
 		sequelize: database,
 		timestamps: false,
-		modelName: 'permission'
+		modelName: 'inventory',
+		tableName: 'inventory'
 	}
 );
 
-export default Permission;
+export default Inventory;

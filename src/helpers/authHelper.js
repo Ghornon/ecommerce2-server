@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 const signToken = id =>
 	JWT.sign(
 		{
-			iss: 'Ecommerce',
+			iss: 'Ecommerce2',
 			sub: id,
 			iat: new Date().getTime(),
 			exo: new Date().setDate(new Date().getDate() + 1)
