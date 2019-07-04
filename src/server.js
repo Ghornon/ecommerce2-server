@@ -7,12 +7,13 @@ import bodyParser from 'body-parser';
 
 import database from './helpers/database';
 import Logger from './helpers/logger';
+import passport from './helpers/passport';
 
 // Routers
 
 import authRouter from './routes/authRouter';
 import invetoryRouter from './routes/invetoryRouter';
-import cartRouter from './routes/cartRouter';
+import userRouter from './routes/userRouter';
 
 // Config
 
@@ -34,7 +35,7 @@ database
 
 app.use('/api/auth', authRouter);
 app.use('/api/inventory', invetoryRouter);
-app.use('/api/cart', cartRouter);
+app.use('/api/users', passport.authenticate('jwt', { session: false }), userRouter);
 
 // Server
 const port = process.env.PORT || 8080;

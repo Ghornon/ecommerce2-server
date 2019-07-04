@@ -3,7 +3,9 @@ import passportLocal from 'passport-local';
 import passportJwt from 'passport-jwt';
 import bcrypt from 'bcryptjs';
 
+// Models
 import User from '../models/userModel';
+import Permission from '../models/permissionModel';
 
 // JSON web token strategy
 const JwtStrategy = passportJwt.Strategy;
@@ -23,7 +25,9 @@ passport.use(
 			try {
 				// Finde the user
 
-				const user = await User.findByPk(payload.sub);
+				const user = await User.findByPk(payload.sub, {
+					include: [{ model: Permission }]
+				}).then(data => (data ? data.get({ plain: true }) : null));
 
 				if (!user) {
 					return done(null, false);
@@ -48,7 +52,10 @@ passport.use(
 		async (login, password, done) => {
 			try {
 				// Finde the user
-				const user = await User.findOne({ where: { login } });
+				const user = await User.findOne({
+					where: { login },
+					include: [{ model: Permission }]
+				}).then(data => (data ? data.get({ plain: true }) : null));
 
 				if (!user) {
 					return done(null, false);

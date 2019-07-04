@@ -2,7 +2,7 @@ import Cart from '../models/cartModel';
 import Inventory from '../models/inventoryModel';
 
 const selectAll = async (req, res) => {
-	const { id } = req.user;
+	const { id } = req.target;
 
 	const cart = await Cart.findAll({
 		where: {
@@ -12,11 +12,11 @@ const selectAll = async (req, res) => {
 		include: [{ model: Inventory, as: 'inventory' }]
 	});
 
-	return res.status(200).json({ cart });
+	return res.status(200).json(cart);
 };
 
 const create = async (req, res) => {
-	const { id } = req.user;
+	const { id } = req.target;
 	const { inventoryId, quantity = 1 } = req.body;
 
 	const [cart, isNewRecord] = await Cart.findOrCreate({
@@ -34,11 +34,11 @@ const create = async (req, res) => {
 		return res.status(409).json({ error: 'Item is already in a cart' });
 	}
 
-	return res.status(201).json({ cart });
+	return res.status(201).json(cart);
 };
 
 const update = async (req, res) => {
-	const { id } = req.user;
+	const { id } = req.target;
 	const { cartId } = req.params;
 	const { quantity = 1 } = req.body;
 
@@ -56,11 +56,11 @@ const update = async (req, res) => {
 		return res.status(404).json({ error: 'Not found!' });
 	}
 
-	return res.status(200).json();
+	return res.status(204).json();
 };
 
 const removeByPk = async (req, res) => {
-	const { id } = req.user;
+	const { id } = req.target;
 	const { cartId } = req.params;
 
 	const rowDestroyed = await Cart.destroy({
@@ -74,11 +74,11 @@ const removeByPk = async (req, res) => {
 		return res.status(404).json({ error: 'Not found!' });
 	}
 
-	return res.status(200).json();
+	return res.status(204).json();
 };
 
 const removeAll = async (req, res) => {
-	const { id } = req.user;
+	const { id } = req.target;
 
 	const rowDestroyed = await Cart.destroy({
 		where: {
@@ -90,7 +90,7 @@ const removeAll = async (req, res) => {
 		return res.status(404).json({ error: 'Not found!' });
 	}
 
-	return res.status(200).json();
+	return res.status(204).json();
 };
 
 export { selectAll, create, update, removeByPk, removeAll };
