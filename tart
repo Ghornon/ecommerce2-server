@@ -1,0 +1,71 @@
+[33mcommit 37157ca445f1088781f51cfec681794001be64b8[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m)[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Thu Jul 4 16:07:21 2019 +0200
+
+    Access guard
+    
+    Add access guard helper
+    Add protected routes
+
+[33mcommit 2e8068aa176a7279881609af48a6b62eafa65dda[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Wed Jul 3 15:24:39 2019 +0200
+
+    Order models
+
+[33mcommit deef01b9c627f8d98d1aea16a29d4447549ad582[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Sat Jun 29 18:52:25 2019 +0200
+
+    Add guard and inventory support
+    
+    Add guard helper bas on user permission
+    Add inventory post/put/delete support
+
+[33mcommit e035167dfb5111ef984818a475db6dea248cc9a3[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Sat Jun 29 16:44:35 2019 +0200
+
+    Add cart support and user model update
+    
+    Add inventory model, roues, controllers
+    Add cart model, roues, controllers
+    Delete database select from server.js
+    Update primery key auto increment
+    Fix signUp function
+
+[33mcommit 478495a5e8fa8041addc40e3e5fb6a26216209b0[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Thu Jun 27 14:32:35 2019 +0200
+
+    Custom logger and dotenv/config
+    
+    Add custom logger
+    Change console logs to the Logger
+    Change dotenv/config import
+
+[33mcommit b4087da78d5dcd818524140d61b696ef4bc67f61[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Thu Jun 27 00:11:29 2019 +0200
+
+    Basic auth system
+    
+    Add passport locla stratedy
+    Add signin/signup routes
+    Add signin/signup logic
+
+[33mcommit 32cc5d084a4470dec1a83121e637689462025997[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Wed Jun 26 19:30:56 2019 +0200
+
+    Add basic db/model structure
+    
+    Add db connection
+    Add User model
+    Add auth template
+
+[33mcommit c4c8cfa7628e2ffe083fdeb2fcffd15dc08c223c[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Szymon Guzik <szymon198198@gmail.com>
+Date:   Mon Jun 24 17:16:55 2019 +0200
+
+    Initial commit

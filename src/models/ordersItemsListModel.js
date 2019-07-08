@@ -4,9 +4,9 @@ import database from '../helpers/database';
 import Inventory from './inventoryModel';
 import OrdersMeta from './ordersMetaModel';
 
-class ordersItemList extends Model {}
+class OrdersItemsList extends Model {}
 
-ordersItemList.init(
+OrdersItemsList.init(
 	{
 		id: {
 			type: Sequelize.INTEGER,
@@ -37,7 +37,7 @@ ordersItemList.init(
 	}
 );
 
-ordersItemList.hasOne(Inventory, { foreignKey: 'id', sourceKey: 'inventoryId' });
-ordersItemList.hasOne(OrdersMeta, { foreignKey: 'id', sourceKey: 'metaId' });
+OrdersItemsList.hasOne(Inventory, { foreignKey: 'id', sourceKey: 'inventoryId' });
+OrdersItemsList.hasOne(OrdersMeta, { foreignKey: 'id', sourceKey: 'metaId' });
 
-export default ordersItemList;
+export default OrdersItemsList;

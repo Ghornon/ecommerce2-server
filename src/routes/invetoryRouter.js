@@ -10,13 +10,17 @@ const inventoryRouter = Router();
 inventoryRouter
 	.route('/')
 	.get(getAll)
-	.post(passport.authenticate('jwt', { session: false }), accessGuard('Admin'), create);
+	.post(passport.authenticate('jwt', { session: false }), accessGuard(false, 'Admin'), create);
 
 inventoryRouter
 	.route('/:inventoryId')
-	.get(passport.authenticate('jwt', { session: false }), accessGuard('Admin'), getByPk)
-	.put(passport.authenticate('jwt', { session: false }), accessGuard('Admin'), update)
-	.delete(passport.authenticate('jwt', { session: false }), accessGuard('Admin'), removeByPk);
+	.get(passport.authenticate('jwt', { session: false }), accessGuard(false, 'Admin'), getByPk)
+	.put(passport.authenticate('jwt', { session: false }), accessGuard(false, 'Admin'), update)
+	.delete(
+		passport.authenticate('jwt', { session: false }),
+		accessGuard(false, 'Admin'),
+		removeByPk
+	);
 
 // Export
 export default inventoryRouter;

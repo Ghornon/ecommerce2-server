@@ -1,8 +1,9 @@
 import { Op } from 'sequelize';
 import Permission from '../models/permissionModel';
 
-const accessGuard = role => async (req, res, next) => {
-	const { userId } = req.params;
+const accessGuard = (selfAccess, role) => async (req, res, next) => {
+	const { userId = res.locals.userId } = req.params;
+
 	const {
 		id,
 		permission: { power }
@@ -16,15 +17,15 @@ const accessGuard = role => async (req, res, next) => {
 		}
 	}).then(data => (data ? data.get() : null));
 
-	if (neededPermissions && userId) {
+	if (neededPermissions) {
 		const access = {
-			self: userId === 'me' || id === parseInt(userId, 10),
+			selfAccess: selfAccess ? userId === 'me' || id === parseInt(userId, 10) : false,
 			role: power >= neededPermissions.power
 		};
 
-		if (access.role || access.self) {
+		if (access.role || access.selfAccess) {
 			req.access = access;
-			req.target = { id: userId === 'me' ? id : userId };
+			req.target = { userId: userId === 'me' ? id : userId };
 
 			return next();
 		}

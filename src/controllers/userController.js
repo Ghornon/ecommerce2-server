@@ -23,10 +23,11 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUserByPk = async (req, res) => {
-	const { id } = req.target;
+	const { userId } = req.target;
 
-	const user = await User.findByPk(id, {
-		include: [{ model: Permission }]
+	const user = await User.findByPk(userId, {
+		include: [{ model: Permission }],
+		attributes: ['id', 'login', 'email', 'firstName', 'lastName', 'permissionId']
 	}).then(data => (data ? data.get({ plain: true }) : null));
 
 	if (!user) {

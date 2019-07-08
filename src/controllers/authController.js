@@ -15,12 +15,12 @@ const signUp = async (req, res) => {
 
 	const hash = await genHash(password);
 
-	const [user, isNewRecord] = await User.findOrCreate({
+	const [user, created] = await User.findOrCreate({
 		where: { login },
 		defaults: { login, password: hash, email, firstName, lastName, permissionId: 6 }
 	});
 
-	if (!isNewRecord) {
+	if (!created) {
 		return res.status(409).json({ error: 'Login is already in use!' });
 	}
 

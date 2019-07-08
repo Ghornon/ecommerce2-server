@@ -14,6 +14,7 @@ import passport from './helpers/passport';
 import authRouter from './routes/authRouter';
 import invetoryRouter from './routes/invetoryRouter';
 import userRouter from './routes/userRouter';
+import ordersRouter from './routes/ordersRouter';
 
 // Config
 
@@ -36,9 +37,9 @@ database
 app.use('/api/auth', authRouter);
 app.use('/api/inventory', invetoryRouter);
 app.use('/api/users', passport.authenticate('jwt', { session: false }), userRouter);
+app.use('/api/orders', passport.authenticate('jwt', { session: false }), ordersRouter);
 
 // Server
 const port = process.env.PORT || 8080;
 
-/* eslint no-console: 0 */
 app.listen(port, () => Logger.info(`Test app listening on port ${port}!`));

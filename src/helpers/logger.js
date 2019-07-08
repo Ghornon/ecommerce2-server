@@ -2,17 +2,17 @@
 import chalk from 'chalk';
 
 const Logger = {
-	ok: data => {
-		console.log(chalk.greenBright.bold('[OK]'), data);
+	ok: (...data) => {
+		console.log(chalk.greenBright.bold('[OK]'), ...data);
 	},
-	info: data => {
-		console.info(chalk.blueBright.bold('[INFO]'), data);
+	info: (...data) => {
+		console.info(chalk.blueBright.bold('[INFO]'), ...data);
 	},
-	warn: data => {
-		console.warn(chalk.yellowBright.bold(['WARN']), data);
+	warn: (...data) => {
+		console.warn(chalk.yellowBright.bold(['WARN']), ...data);
 	},
-	error: data => {
-		console.error(chalk.redBright.bold('[ERROR]'), data);
+	error: (...data) => {
+		console.error(chalk.redBright.bold('[ERROR]'), ...data);
 	}
 };
 

@@ -1,6 +1,11 @@
 import Router from 'express-promise-router';
-import passport from '../helpers/passport';
-import { selectAll, create, update, removeByPk, removeAll } from '../controllers/cartController';
+import {
+	selectCartItems,
+	addToCart,
+	updateCartItemByPk,
+	removeCartItemByPk,
+	removeAllCartItems
+} from '../controllers/cartController';
 
 const cartRouter = Router();
 
@@ -8,14 +13,14 @@ const cartRouter = Router();
 
 cartRouter
 	.route('/')
-	.get(passport.authenticate('jwt', { session: false }), selectAll)
-	.post(passport.authenticate('jwt', { session: false }), create)
-	.delete(passport.authenticate('jwt', { session: false }), removeAll);
+	.get(selectCartItems)
+	.post(addToCart)
+	.delete(removeAllCartItems);
 
 cartRouter
 	.route('/:cartId')
-	.delete(passport.authenticate('jwt', { session: false }), removeByPk)
-	.put(passport.authenticate('jwt', { session: false }), update);
+	.delete(removeCartItemByPk)
+	.put(updateCartItemByPk);
 
 // Export
 export default cartRouter;

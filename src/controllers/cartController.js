@@ -1,12 +1,12 @@
 import Cart from '../models/cartModel';
 import Inventory from '../models/inventoryModel';
 
-const selectAll = async (req, res) => {
-	const { id } = req.target;
+const selectCartItems = async (req, res) => {
+	const { userId } = req.target;
 
 	const cart = await Cart.findAll({
 		where: {
-			userId: id
+			userId
 		},
 		attributes: ['id', 'quantity'],
 		include: [{ model: Inventory, as: 'inventory' }]
@@ -15,14 +15,14 @@ const selectAll = async (req, res) => {
 	return res.status(200).json(cart);
 };
 
-const create = async (req, res) => {
-	const { id } = req.target;
+const addToCart = async (req, res) => {
+	const { userId } = req.target;
 	const { inventoryId, quantity = 1 } = req.body;
 
-	const [cart, isNewRecord] = await Cart.findOrCreate({
-		where: { userId: id, inventoryId },
+	const [cart, created] = await Cart.findOrCreate({
+		where: { userId, inventoryId },
 		defaults: {
-			userId: id,
+			userId,
 			inventoryId,
 			quantity
 		},
@@ -30,15 +30,15 @@ const create = async (req, res) => {
 		include: [{ model: Inventory, as: 'inventory' }]
 	});
 
-	if (!isNewRecord) {
+	if (!created) {
 		return res.status(409).json({ error: 'Item is already in a cart' });
 	}
 
 	return res.status(201).json(cart);
 };
 
-const update = async (req, res) => {
-	const { id } = req.target;
+const updateCartItemByPk = async (req, res) => {
+	const { userId } = req.target;
 	const { cartId } = req.params;
 	const { quantity = 1 } = req.body;
 
@@ -47,7 +47,7 @@ const update = async (req, res) => {
 		{
 			where: {
 				id: cartId,
-				userId: id
+				userId
 			}
 		}
 	);
@@ -59,14 +59,14 @@ const update = async (req, res) => {
 	return res.status(204).json();
 };
 
-const removeByPk = async (req, res) => {
-	const { id } = req.target;
+const removeCartItemByPk = async (req, res) => {
+	const { userId } = req.target;
 	const { cartId } = req.params;
 
 	const rowDestroyed = await Cart.destroy({
 		where: {
 			id: cartId,
-			userId: id
+			userId
 		}
 	});
 
@@ -77,12 +77,12 @@ const removeByPk = async (req, res) => {
 	return res.status(204).json();
 };
 
-const removeAll = async (req, res) => {
-	const { id } = req.target;
+const removeAllCartItems = async (req, res) => {
+	const { userId } = req.target;
 
 	const rowDestroyed = await Cart.destroy({
 		where: {
-			userId: id
+			userId
 		}
 	});
 
@@ -93,4 +93,4 @@ const removeAll = async (req, res) => {
 	return res.status(204).json();
 };
 
-export { selectAll, create, update, removeByPk, removeAll };
+export { selectCartItems, addToCart, updateCartItemByPk, removeCartItemByPk, removeAllCartItems };
